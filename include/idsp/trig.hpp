@@ -12,7 +12,7 @@ std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 constexpr T sinh(T x) {
     const auto x2 {x * x};
     const auto num {-x * (11511339840 + x2 * (1640635920 + x2 * (52785432 + x2 * 479249)))};
-    const auto dem {-11511339840.f + x2 * (277920720 + x2 * (-3177720 + x2 * 18361)};
+    const auto dem {-11511339840.f + x2 * (277920720 + x2 * (-3177720 + x2 * 18361))};
     return num / dem;
 }
 

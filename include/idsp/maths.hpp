@@ -2,6 +2,7 @@
 #define IDSP_MATHS_H
 
 #include <type_traits>
+#include <cmath>
 
 namespace idsp {
 
