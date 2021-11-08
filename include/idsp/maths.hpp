@@ -3,6 +3,7 @@
 
 #include <type_traits>
 #include <cmath>
+#include <stdexcept>
 
 namespace idsp {
 
@@ -32,9 +33,17 @@ constexpr int sgn(T x) {
 }
 
 /** Scales @a x from the range [ @a xMin : @a xMax ] to the range [ @a yMin : @a yMax ]. */
-template<class T>
+template<class T,
+std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 constexpr T scale(T x, T xMin, T xMax, T yMin, T yMax) {
     return yMin + (x - xMin) / (xMax - xMin) * (yMax - yMin);
+}
+
+/** Scales @a x from the range [ @a xMin : @a xMax ] to the range [ @a yMin : @a yMax ]. */
+template<class T, class Tf = double,
+std::enable_if_t<std::is_integral<T>::value, bool> = true>
+constexpr T scale(T x, T xMin, T xMax, T yMin, T yMax) {
+    return yMin + T(Tf(x - xMin) / Tf(xMax - xMin) * (yMax - yMin));
 }
 
 /** @returns x^n.
@@ -49,18 +58,32 @@ constexpr T power(T x, unsigned int n) {
 }
 
 /** @returns x!. */
-template<class T>
+template<class T,
+std::enable_if_t<std::is_unsigned<T>::value, bool> = true>
 constexpr T factorial(T x) {
-    auto r {T(1)};
-    while (x > T(0)) {
+    constexpr auto one {T(1)};
+    auto r {one};
+    while (x >= one) {
         r *= x;
-        x -= T(1);
+        x -= one;
     }
     return r;
 }
 
+/** @returns x!.
+ * @note Overload provided for convenience of using literal int types, which are
+ * generally signed. Negative input numbers are not valid and will throw an
+ * error. */
+template<class T,
+std::enable_if_t<std::is_integral<T>::value && std::is_signed<T>::value, bool> = true>
+constexpr T factorial(T x) {
+    if (x < 0)
+        throw std::invalid_argument("idsp::factorial: cannot give factorial of negative number.");
+    return factorial(static_cast<typename std::make_unsigned<T>::type>(x));
+}
+
 /** @returns the modulo of @a a and @a b, that is a % b. */
-template<class T, class Ti = long,
+template<class T, class Ti = intmax_t,
 std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 constexpr T mod(T x, T y) {
     return x - (y * T(Ti(x/y)));
