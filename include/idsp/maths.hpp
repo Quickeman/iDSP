@@ -1,6 +1,8 @@
 #ifndef IDSP_MATHS_H
 #define IDSP_MATHS_H
 
+#include "types.hpp"
+
 #include <type_traits>
 #include <cmath>
 #include <stdexcept>
@@ -28,7 +30,7 @@ constexpr T clamp(T x, T low, T high) {
 /** Signum function.
  * @returns 1 for x > 0, -1 for x < 0, and 0 for x = 0. */
 template<class T>
-constexpr int sgn(T x) {
+constexpr IntT sgn(T x) {
     return (x > T(0)) - (x < T(0));
 }
 
@@ -40,7 +42,7 @@ constexpr T scale(T x, T xMin, T xMax, T yMin, T yMax) {
 }
 
 /** Scales @a x from the range [ @a xMin : @a xMax ] to the range [ @a yMin : @a yMax ]. */
-template<class T, class Tf = double,
+template<class T, class Tf = FloatT,
 std::enable_if_t<std::is_integral<T>::value, bool> = true>
 constexpr T scale(T x, T xMin, T xMax, T yMin, T yMax) {
     return yMin + T(Tf(x - xMin) / Tf(xMax - xMin) * (yMax - yMin));
@@ -50,9 +52,9 @@ constexpr T scale(T x, T xMin, T xMax, T yMin, T yMax) {
  * @note this function may be fast for small n but will decrease in performance
  * with increasing n. */
 template<class T>
-constexpr T power(T x, unsigned int n) {
+constexpr T power(T x, UIntT n) {
     auto r {T(1)};
-    for (int i {0}; i < n; i++)
+    for (IntT i {0}; i < n; i++)
         r *= x;
     return r;
 }
@@ -83,7 +85,7 @@ constexpr T factorial(T x) {
 }
 
 /** @returns the modulo of @a a and @a b, that is a % b. */
-template<class T, class Ti = intmax_t,
+template<class T, class Ti = IntT,
 std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 constexpr T mod(T x, T y) {
     return x - (y * T(Ti(x/y)));
