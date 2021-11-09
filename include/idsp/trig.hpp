@@ -4,6 +4,23 @@
 #include "maths.hpp"
 
 namespace idsp {
+
+/** Namespace for imported exact trig functions.
+ * Mainly imported from STL. */
+namespace exact {
+
+using std::sin;
+using std::cos;
+using std::tan;
+
+using std::sinh;
+using std::cosh;
+using std::tanh;
+
+} // namespace exact
+
+
+/** Namespace for fast approximations of trig functions. */
 namespace fast {
 
 /** Padé approximant of the hyperbolic sine function. */
