@@ -23,14 +23,45 @@ using std::tanh;
 /** Namespace for fast approximations of trig functions. */
 namespace fast {
 
+/** Padé approximant of the sine function. */
+template<class T,
+std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+constexpr T sin(T x) {
+    const auto x2 {x * x};
+    const auto num {-x * (-(T)11511339840.0 + x2 * ((T)1640635920.0 + x2 * (-(T)52785432.0 + x2 * (T)479249.0)))};
+    const auto den {(T)11511339840.0 + x2 * ((T)277920720.0 + x2 * ((T)3177720.0 + x2 * (T)18361.0))};
+    return num / den;
+}
+
+/** Padé approximant of the cosine function. */
+template<class T,
+std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+constexpr T cos(T x) {
+    const auto x2 {x * x};
+    const auto num {-(-(T)39251520.0 + x2 * ((T)18471600.0 + x2 * (-(T)1075032.0 + (T)14615.0 * x2)))};
+    const auto den {(T)39251520.0 + x2 * ((T)1154160.0 + x2 * ((T)16632.0 + x2 * (T)127.0))};
+    return num / den;
+}
+
+/** Padé approximant of the tangent function. */
+template<class T,
+std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
+constexpr T tan(T x) {
+    const auto x2 {x * x};
+    const auto num {x * (-(T)135135.0 + x2 * ((T)17325.0 + x2 * (-(T)378.0 + x2)))};
+    const auto den {-(T)135135.0 + x2 * ((T)62370.0 + x2 * (-(T)3150.0 + (T)28.0 * x2))};
+    return num / den;
+}
+
+
 /** Padé approximant of the hyperbolic sine function. */
 template<class T,
 std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 constexpr T sinh(T x) {
     const auto x2 {x * x};
-    const auto num {-x * (11511339840 + x2 * (1640635920 + x2 * (52785432 + x2 * 479249)))};
-    const auto dem {-11511339840.f + x2 * (277920720 + x2 * (-3177720 + x2 * 18361))};
-    return num / dem;
+    const auto num {-x * ((T)11511339840.0 + x2 * ((T)1640635920.0 + x2 * ((T)52785432.0 + x2 * (T)479249.0)))};
+    const auto den {-(T)11511339840.0 + x2 * ((T)277920720.0 + x2 * (-(T)3177720.0 + x2 * (T)18361.0))};
+    return num / den;
 }
 
 /** Padé approximant of the hyperbolic cosine function. */
@@ -38,9 +69,9 @@ template<class T,
 std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 constexpr T cosh(T x) {
     const auto x2 {x * x};
-    const auto num {-(T(39251520) + x2 * (T(18471600) + x2 * (T(1075032) + T(14615) * x2)))};
-    const auto dem {-T(39251520) + x2 * (T(1154160) + x2 * (T(-16632) + T(127) * x2))};
-    return num / dem;
+    const auto num {-((T)39251520.0 + x2 * ((T)18471600.0 + x2 * ((T)1075032.0 + (T)14615.0 * x2)))};
+    const auto den {-(T)39251520.0 + x2 * ((T)1154160.0 + x2 * (-(T)16632.0 + (T)127.0 * x2))};
+    return num / den;
 }
 
 /** Padé approximant of the hyperbolic tangent function. */
@@ -48,7 +79,9 @@ template<class T,
 std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
 constexpr T tanh(T x) {
     const auto x2 {x * x};
-    return clamp(x * (T(27.0) + x2) / (T(27.0) + (T(9.0) * x2)), T(-1.0), T(1.0));
+    const auto num {x * ((T)135135.0 + x2 * ((T)17325.0 + x2 * ((T)378.0 + x2)))};
+    const auto den {(T)135135.0 + x2 * ((T)62370.0 + x2 * ((T)3150.0 + (T)28.0 * x2))};
+    return num / den;
 }
 
 } // namespace fast
