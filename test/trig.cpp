@@ -1,4 +1,4 @@
-#include "trig.hpp"
+#include "idsp/trig.hpp"
 
 #include "unit_test_framework.h"
 

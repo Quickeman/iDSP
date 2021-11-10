@@ -1,4 +1,4 @@
-#include "maths.hpp"
+#include "idsp/maths.hpp"
 
 #include "unit_test_framework.h"
 

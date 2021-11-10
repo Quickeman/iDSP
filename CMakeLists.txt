@@ -24,7 +24,7 @@ endif()
 enable_testing()
 
 # Include the source code
-include_directories(${PROJECT_SOURCE_DIR}/include/idsp)
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # Include the testing framework
 include_directories(${PROJECT_SOURCE_DIR}/test/framework)
