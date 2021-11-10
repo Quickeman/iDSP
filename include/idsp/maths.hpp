@@ -9,6 +9,16 @@
 
 namespace idsp {
 
+namespace num {
+
+/** pi constant. */
+static constexpr auto pi {static_cast<FloatT>(M_PI)};
+
+/** e constant. */
+static constexpr auto e {static_cast<FloatT>(M_E)};
+
+} // namespace num
+
 /** @return the minimum of @a a and @a b. */
 template<class T>
 constexpr T min(T a, T b) {
